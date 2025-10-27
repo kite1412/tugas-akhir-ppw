@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Natha Raditya Rauf</title>
+
+    <!-- LINK ke External CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- INTERNAL CSS -->
+    <style>
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Tentang</a></li>
+            <li><a href="#skills">Keahlian</a></li>
+            <li><a href="#projects">Proyek</a></li>
+            <li><a href="#contact">Kontak</a></li>
+        </ul>
+    </nav>
+
+    <header id="home" style="color: white; width: 100%; text-align: center; padding-top: 4rem;">
+        <h1>Natha Raditya Rauf</h1>
+        <p>Web & Mobile Developer</p>
+    </header>
+
+    <main>
+        <section id="about">
+            <h2>Tentang Saya</h2>
+            <article class="profile-container">
+                <img src="assets/photo.webp" 
+                     alt="Foto Profil" 
+                     class="profile-img">
+                <div>
+                    <p>Halo! Saya adalah seorang Web Developer dengan pengalaman 1 tahun dalam membangun website responsif dan aplikasi web modern.</p>
+                    
+                    <div class="highlight-box">
+                        <strong>Spesialisasi:</strong> Frontend Development, React.js, Mobile Development
+                    </div>
+                    
+                    <p><strong>Pendidikan:</strong> S1 Teknik Informatika - Universitas Lampung</p>
+                    <p><strong>Lokasi:</strong> Bandar Lampung, Indonesia</p>
+
+                    <!-- Inline CSS -->
+                    <p style="color: #667eea; font-weight: bold; margin-top: 1rem;">
+                        "Code is poetry written in logic"
+                    </p>
+                </div>
+            </article>
+        </section>
+
+        <section id="skills">
+            <h2>Keahlian</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Frontend Development</h3>
+                    <p>HTML5, CSS3, JavaScript, React.js, Vue.js</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Mobile Development</h3>
+                    <p>Android, Flutter</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Backend Development</h3>
+                    <p>Node.js, Express, PHP, Laravel</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Proyek Terbaru</h2>
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3>E-Commerce Platform</h3>
+                        <p>Platform e-commerce untuk jual beli ikan hias.</p>
+                        <a href="https://github.com/kite1412/react-kiyay-koki" target="_blank" class="link">Lihat Proyek →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3>Task Management App</h3>
+                        <p>Aplikasi manajemen tugas dengan fitur kolaborasi tim dan notifikasi real-time.</p>
+                        <a href="https://github.com/kite1412/android-taskify" target="_blank" class="link">Lihat Proyek →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3>Chat App</h3>
+                        <p>Aplikasi chat real-time dengan fitur grup dan notifikasi.</p>
+                        <a href="https://github.com/kite1412/android-konnekt" target="_blank" class="link">Lihat Proyek →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Hubungi Saya</h2>
+            <p>Tertarik untuk berkolaborasi? Jangan ragu untuk menghubungi saya!</p>
+            
+            <form action="#" method="POST">
+                <label for="nama">Nama Lengkap:</label>
+                <input type="text" id="nama" name="nama" required placeholder="Masukkan nama Anda">
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required placeholder="email@example.com">
+
+                <label for="pesan">Pesan:</label>
+                <textarea id="pesan" name="pesan" required placeholder="Ceritakan tentang proyek Anda..."></textarea>
+
+                <button type="submit">Kirim Pesan</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Natha Raditya Rauf. All Rights Reserved.</p>
+        <div class="social-links">
+            <a href="https://github.com/kite1412" target="_blank">GitHub</a>
+            <a href="https://linkedin.com/in/natha-raditya-rauf" target="_blank">LinkedIn</a>
+            <a href="mailto:natharaditya6@gmail.com">Email</a>
+        </div>
+    </footer>
+</body>
+</html>
