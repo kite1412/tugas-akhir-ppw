@@ -7,7 +7,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #9bff96 100%);
 }
 
 nav {
@@ -34,7 +34,7 @@ nav a {
 }
 
 nav a:hover {
-    color: #764ba2;
+    color: #9bff96;
 }
 
 main {
@@ -55,7 +55,7 @@ section h2 {
     color: #667eea;
     margin-bottom: 1.5rem;
     font-size: 2rem;
-    border-bottom: 3px solid #764ba2;
+    border-bottom: 3px solid #9bff96;
     padding-bottom: 0.5rem;
 }
 
@@ -83,7 +83,7 @@ section h2 {
 
 .skill-card {
     padding: 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #9bff96 100%);
     color: white;
     border-radius: 10px;
     text-align: center;
@@ -151,7 +151,7 @@ input:focus, textarea:focus {
 
 button {
     padding: 1rem 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #9bff96 100%);
     color: white;
     border: none;
     border-radius: 5px;
@@ -182,7 +182,7 @@ footer {
 }
 
 .social-links a:hover {
-    color: #764ba2;
+    color: #9bff96;
 }
 
 .highlight-box {
