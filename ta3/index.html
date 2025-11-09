@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KiTech - Inovasi Digital Masa Depan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "surface": '#313131',
+              "on-surface": '#F1F1F1',
+              "surface-variant": '#212121',
+              "on-surface-variant": '#C2C2C2',
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .animate-fadeInUp {
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, hsl(276, 78%, 36%) 40%, #cf2ffb 100%);
+        }
+        
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.05);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #mobile-menu-toggle {
+            display: none;
+        }
+
+        #mobile-menu-toggle:checked ~ #mobileMenu {
+            display: block;
+        }
+
+        #mobile-menu-toggle:checked ~ label .menu-icon {
+            transform: rotate(90deg);
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        html, body {
+            scroll-behavior: smooth;
+            background-color: #313131;
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #667eea;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #667eea;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-primary {
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    
+    <!-- Header/Navigation -->
+    <nav class="fixed w-full z-50 bg-surface shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold gradient-bg bg-clip-text text-transparent">
+                            <i class="fas fa-bolt mr-2"></i>KiTech
+                        </h1>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-on-surface">Home</a>
+                    <a href="#features" class="nav-link text-on-surface">Fitur</a>
+                    <a href="#about" class="nav-link text-on-surface">Tentang</a>
+                    <a href="#contact" class="nav-link text-on-surface">Kontak</a>
+                    <a href="#contact" class="btn-primary gradient-bg text-white px-6 py-2 rounded-full">
+                        Mulai Gratis
+                    </a>
+                </div>
+                
+                <div class="md:hidden">
+                    <input type="checkbox" id="mobile-menu-toggle" class="hidden">
+                    <label for="mobile-menu-toggle" class="cursor-pointer">
+                        <i class="fas fa-bars text-2xl text-gray-700 menu-icon transition-transform duration-300"></i>
+                    </label>
+                    
+                    <div id="mobileMenu" class="hidden absolute top-16 left-0 right-0 bg-surface border-t shadow-lg">
+                        <div class="px-4 pt-2 pb-4 space-y-2">
+                            <a href="#home" class="block px-3 py-2 text-on-surface hover:bg-purple-50 rounded-md transition duration-300">Home</a>
+                            <a href="#features" class="block px-3 py-2 text-on-surface hover:bg-purple-50 rounded-md transition duration-300">Fitur</a>
+                            <a href="#about" class="block px-3 py-2 text-on-surface hover:bg-purple-50 rounded-md transition duration-300">Tentang</a>
+                            <a href="#contact" class="block px-3 py-2 text-on-surface hover:bg-purple-50 rounded-md transition duration-300">Kontak</a>
+                            <a href="#contact" class="block w-full gradient-bg text-white px-6 py-2 rounded-full text-center mt-2 transition duration-300 hover:opacity-90">
+                                Mulai Gratis
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-24 pb-20 gradient-bg text-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="animate-fadeInUp">
+                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                        Transformasi Digital untuk Bisnis Anda
+                    </h1>
+                    <p class="text-xl mb-8 text-purple-100">
+                        Solusi teknologi inovatif yang membantu perusahaan Anda berkembang di era digital dengan kecepatan dan efisiensi maksimal.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contact" class="btn-primary bg-white text-purple-600 px-8 py-4 rounded-full font-semibold text-center inline-block">
+                            <i class="fas fa-rocket mr-2"></i>Mulai Sekarang
+                        </a>
+                        <a href="#features" class="btn-secondary glass-effect text-white px-8 py-4 rounded-full font-semibold text-center inline-block">
+                            <i class="fas fa-play-circle mr-2"></i>Lihat Demo
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block animate-float">
+                    <div class="relative">
+                        <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+                        <div class="absolute top-0 -right-4 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style="animation-delay: 2s;"></div>
+                        <div class="relative glass-effect rounded-2xl p-8">
+                            <i class="fas fa-laptop-code text-9xl text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-surface-variant">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-on-surface mb-4">Fitur Unggulan Kami</h2>
+                <p class="text-xl text-on-surface">Solusi lengkap untuk kebutuhan digital bisnis Anda</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-surface rounded-xl shadow-lg p-8 hover-scale">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-cloud text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-on-surface mb-4">Cloud Computing</h3>
+                    <p class="text-on-surface-variant leading-relaxed">
+                        Infrastruktur cloud yang scalable dan aman untuk menyimpan dan mengelola data bisnis Anda dengan efisien dan reliability tinggi.
+                    </p>
+                </div>
+                
+                <div class="bg-surface rounded-xl shadow-lg p-8 hover-scale">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-shield-alt text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-on-surface mb-4">Keamanan Maksimal</h3>
+                    <p class="text-on-surface-variant leading-relaxed">
+                        Sistem keamanan berlapis dengan enkripsi end-to-end untuk melindungi data sensitif dan privasi pelanggan Anda.
+                    </p>
+                </div>
+                
+                <div class="bg-surface rounded-xl shadow-lg p-8 hover-scale">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-on-surface mb-4">Analytics Real-time</h3>
+                    <p class="text-on-surface-variant leading-relaxed">
+                        Dashboard analytics canggih untuk memantau performa bisnis secara real-time dan membuat keputusan berbasis data.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-surface">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <div class="relative">
+                        <div class="absolute top-0 left-0 w-full h-full gradient-bg opacity-20 rounded-2xl"></div>
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop" 
+                             alt="Team" 
+                             class="rounded-2xl shadow-2xl relative z-10">
+                    </div>
+                </div>
+                
+                <div>
+                    <h2 class="text-4xl font-bold text-on-surface mb-6">Tentang KiTech</h2>
+                    <p class="text-lg text-on-surface-variant mb-6 leading-relaxed">
+                        KiTech adalah perusahaan teknologi yang berfokus pada solusi digital inovatif untuk membantu bisnis bertransformasi di era digital. Didirikan pada tahun 2020, kami telah melayani lebih dari 500+ perusahaan di seluruh Indonesia.
+                    </p>
+                    <p class="text-lg text-on-surface-variant mb-8 leading-relaxed">
+                        Tim kami terdiri dari para ahli teknologi berpengalaman yang berkomitmen untuk memberikan solusi terbaik dengan menggunakan teknologi terkini seperti AI, Machine Learning, dan Cloud Computing.
+                    </p>
+                    
+                    <div class="grid grid-cols-3 gap-6 mb-8">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold gradient-bg bg-clip-text text-transparent mb-2">500+</div>
+                            <div class="text-on-surface-variant">Klien</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold gradient-bg bg-clip-text text-transparent mb-2">50+</div>
+                            <div class="text-on-surface-variant">Tim Ahli</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold gradient-bg bg-clip-text text-transparent mb-2">99%</div>
+                            <div class="text-on-surface-variant">Kepuasan</div>
+                        </div>
+                    </div>
+                    
+                    <a href="#contact" class="btn-primary gradient-bg text-white px-8 py-4 rounded-full font-semibold inline-block">
+                        <i class="fas fa-info-circle mr-2"></i>Pelajari Lebih Lanjut
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="py-20 bg-surface">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-on-surface mb-4">Hubungi Kami</h2>
+                <p class="text-xl text-on-surface-variant">Siap memulai transformasi digital? Mari berdiskusi!</p>
+            </div>
+
+            <div class="bg-surface-variant rounded-2xl shadow-xl p-8 md:p-12">
+                <form action="#" method="POST" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2 text-on-surface" for="name">
+                                <i class="fas fa-user mr-2 text-purple-600"></i>Nama Lengkap
+                            </label>
+                            <input type="text" 
+                                   id="name" 
+                                   name="name"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition duration-300" 
+                                   placeholder="Masukkan nama Anda"
+                                   required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2 text-on-surface" for="email">
+                                <i class="fas fa-envelope mr-2 text-purple-600"></i>Email
+                            </label>
+                            <input type="email" 
+                                   id="email" 
+                                   name="email"
+                                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition duration-300" 
+                                   placeholder="email@contoh.com"
+                                   required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2 text-on-surface" for="phone">
+                            <i class="fas fa-phone mr-2 text-purple-600"></i>Nomor Telepon
+                        </label>
+                        <input type="tel" 
+                               id="phone" 
+                               name="phone"
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition duration-300" 
+                               placeholder="08xx-xxxx-xxxx"
+                               required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2 text-on-surface" for="subject">
+                            <i class="fas fa-bookmark mr-2 text-purple-600"></i>Subjek
+                        </label>
+                        <input type="text" 
+                               id="subject" 
+                               name="subject"
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition duration-300" 
+                               placeholder="Topik diskusi"
+                               required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2 text-on-surface" for="message">
+                            <i class="fas fa-comment mr-2 text-purple-600"></i>Pesan
+                        </label>
+                        <textarea id="message" 
+                                  name="message"
+                                  rows="5" 
+                                  class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg transition duration-300" 
+                                  placeholder="Ceritakan kebutuhan Anda..."
+                                  required></textarea>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full gradient-bg text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:opacity-90 hover:shadow-xl hover:-translate-y-1">
+                        <i class="fas fa-paper-plane mr-2"></i>Kirim Pesan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">
+                        <i class="fas fa-bolt mr-2"></i>KiTech
+                    </h3>
+                    <p class="text-purple-100">
+                        Solusi teknologi terdepan untuk bisnis masa depan.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Perusahaan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-purple-100 hover:text-white transition duration-300">Tentang Kami</a></li>
+                        <li><a href="#" class="text-purple-100 hover:text-white transition duration-300">Karir</a></li>
+                        <li><a href="#" class="text-purple-100 hover:text-white transition duration-300">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Layanan</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="text-purple-100 hover:text-white transition duration-300">Cloud Solutions</a></li>
+                        <li><a href="#contact" class="text-purple-100 hover:text-white transition duration-300">Consulting</a></li>
+                        <li><a href="#contact" class="text-purple-100 hover:text-white transition duration-300">Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Ikuti Kami</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition duration-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-purple-400 border-opacity-30 pt-8 text-center">
+                <p class="text-purple-100">
+                    &copy; 2025 KiTech. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
