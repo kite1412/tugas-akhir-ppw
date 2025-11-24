@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Interaktif</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-ripple:active {
+            transform: scale(0.95);
+        }
+        .display-text {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-purple-50 to-blue-50 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <!-- Calculator Container -->
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <!-- Display Section -->
+            <div class="bg-gradient-to-br from-purple-600 to-blue-600 p-6 text-white">
+                <div class="text-right mb-2">
+                    <div id="expression" class="text-sm opacity-75 h-6 overflow-hidden">0</div>
+                    <div id="display" class="text-4xl font-bold display-text mt-2">0</div>
+                </div>
+            </div>
+
+            <!-- Memory Buttons -->
+            <div class="grid grid-cols-5 gap-2 p-4 bg-gray-50">
+                <button onclick="memoryAdd()" class="btn-ripple bg-purple-100 text-purple-700 rounded-xl py-2 text-sm font-medium hover:bg-purple-200">M+</button>
+                <button onclick="memorySubtract()" class="btn-ripple bg-purple-100 text-purple-700 rounded-xl py-2 text-sm font-medium hover:bg-purple-200">M-</button>
+                <button onclick="memoryRecall()" class="btn-ripple bg-purple-100 text-purple-700 rounded-xl py-2 text-sm font-medium hover:bg-purple-200">MR</button>
+                <button onclick="memoryClear()" class="btn-ripple bg-purple-100 text-purple-700 rounded-xl py-2 text-sm font-medium hover:bg-purple-200">MC</button>
+                <button onclick="toggleHistory()" class="btn-ripple bg-blue-100 text-blue-700 rounded-xl py-2 text-sm font-medium hover:bg-blue-200">📜</button>
+            </div>
+
+            <!-- History Panel -->
+            <div id="historyPanel" class="hidden bg-gray-50 p-4 border-t border-gray-200 max-h-40 overflow-y-auto">
+                <div class="text-xs font-semibold text-gray-600 mb-2">Riwayat Perhitungan:</div>
+                <div id="historyList" class="space-y-1 text-sm text-gray-700"></div>
+            </div>
+
+            <!-- Calculator Buttons -->
+            <div class="p-4 grid grid-cols-4 gap-3">
+                <!-- Row 1 -->
+                <button onclick="clearEntry()" class="btn-ripple bg-red-100 text-red-700 rounded-2xl py-4 font-semibold hover:bg-red-200">CE</button>
+                <button onclick="clearAll()" class="btn-ripple bg-red-100 text-red-700 rounded-2xl py-4 font-semibold hover:bg-red-200">C</button>
+                <button onclick="backspace()" class="btn-ripple bg-gray-200 text-gray-700 rounded-2xl py-4 font-semibold hover:bg-gray-300">⌫</button>
+                <button onclick="inputOperator('/')" class="btn-ripple bg-orange-100 text-orange-700 rounded-2xl py-4 text-2xl font-semibold hover:bg-orange-200">÷</button>
+                
+                <!-- Row 2 -->
+                <button onclick="inputNumber('7')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">7</button>
+                <button onclick="inputNumber('8')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">8</button>
+                <button onclick="inputNumber('9')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">9</button>
+                <button onclick="inputOperator('*')" class="btn-ripple bg-orange-100 text-orange-700 rounded-2xl py-4 text-2xl font-semibold hover:bg-orange-200">×</button>
+                
+                <!-- Row 3 -->
+                <button onclick="inputNumber('4')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">4</button>
+                <button onclick="inputNumber('5')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">5</button>
+                <button onclick="inputNumber('6')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">6</button>
+                <button onclick="inputOperator('-')" class="btn-ripple bg-orange-100 text-orange-700 rounded-2xl py-4 text-2xl font-semibold hover:bg-orange-200">−</button>
+                
+                <!-- Row 4 -->
+                <button onclick="inputNumber('1')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">1</button>
+                <button onclick="inputNumber('2')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">2</button>
+                <button onclick="inputNumber('3')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200">3</button>
+                <button onclick="inputOperator('+')" class="btn-ripple bg-orange-100 text-orange-700 rounded-2xl py-4 text-2xl font-semibold hover:bg-orange-200">+</button>
+                
+                <!-- Row 5 -->
+                <button onclick="inputNumber('0')" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-xl font-medium hover:bg-gray-200 col-span-2">0</button>
+                <button onclick="inputDecimal()" class="btn-ripple bg-gray-100 text-gray-800 rounded-2xl py-4 text-2xl font-medium hover:bg-gray-200">.</button>
+                <button onclick="calculate()" class="btn-ripple bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-2xl py-4 text-2xl font-semibold hover:from-purple-700 hover:to-blue-700">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '0';
+        let expression = '';
+        let memory = 0;
+        let history = [];
+        let lastResult = null;
+        let justCalculated = false;
+        let display, expressionDisplay;
+
+        // Initialize after DOM loads
+        window.addEventListener('DOMContentLoaded', () => {
+            display = document.getElementById('display');
+            expressionDisplay = document.getElementById('expression');
+            updateDisplay();
+        });
+
+        function updateDisplay() {
+            if (!display || !expressionDisplay) return;
+            display.textContent = currentInput;
+            expressionDisplay.textContent = expression || '0';
+        }
+
+        function inputNumber(num) {
+            if (!display) return;
+            if (justCalculated) {
+                currentInput = num;
+                expression = num;
+                justCalculated = false;
+            } else {
+                if (currentInput === '0' || currentInput === 'Error') {
+                    currentInput = num;
+                } else {
+                    currentInput += num;
+                }
+                if (expression === '' || expression === '0') {
+                    expression = num;
+                } else {
+                    expression += num;
+                }
+            }
+            updateDisplay();
+        }
+
+        function inputOperator(op) {
+            justCalculated = false;
+            if (expression === '' || expression === '0') {
+                expression = currentInput + ' ' + formatOperator(op) + ' ';
+            } else if (!endsWithOperator(expression)) {
+                expression += ' ' + formatOperator(op) + ' ';
+            } else {
+                expression = expression.slice(0, -3) + ' ' + formatOperator(op) + ' ';
+            }
+            currentInput = '0';
+            updateDisplay();
+        }
+
+        function inputDecimal() {
+            if (justCalculated) {
+                currentInput = '0.';
+                expression = '0.';
+                justCalculated = false;
+            } else if (!currentInput.includes('.')) {
+                currentInput += '.';
+                expression += '.';
+            }
+            updateDisplay();
+        }
+
+        function formatOperator(op) {
+            const map = {'+': '+', '-': '−', '*': '×', '/': '÷'};
+            return map[op] || op;
+        }
+
+        function endsWithOperator(expr) {
+            return /[+−×÷]\s*$/.test(expr);
+        }
+
+        function calculate() {
+            try {
+                if (expression === '' || expression === '0') {
+                    return;
+                }
+
+                let calcExpression = expression.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-');
+                
+                // Evaluate expression respecting operator precedence
+                let result = eval(calcExpression);
+                
+                if (!isFinite(result)) {
+                    currentInput = 'Error';
+                    addToHistory(expression + ' = Error (Pembagian dengan nol)');
+                } else {
+                    result = Math.round(result * 100000000) / 100000000;
+                    currentInput = result.toString();
+                    addToHistory(expression + ' = ' + result);
+                    lastResult = result;
+                }
+                
+                expression = currentInput;
+                justCalculated = true;
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                expression = 'Error';
+                updateDisplay();
+            }
+        }
+
+        function clearAll() {
+            currentInput = '0';
+            expression = '';
+            justCalculated = false;
+            updateDisplay();
+        }
+
+        function clearEntry() {
+            currentInput = '0';
+            updateDisplay();
+        }
+
+        function backspace() {
+            if (currentInput.length > 1 && currentInput !== 'Error') {
+                currentInput = currentInput.slice(0, -1);
+                if (expression.length > 0) {
+                    expression = expression.slice(0, -1);
+                }
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+
+        function memoryAdd() {
+            const num = parseFloat(currentInput);
+            if (!isNaN(num)) {
+                memory += num;
+                showMemoryFeedback('M+ (' + memory + ')');
+            }
+        }
+
+        function memorySubtract() {
+            const num = parseFloat(currentInput);
+            if (!isNaN(num)) {
+                memory -= num;
+                showMemoryFeedback('M- (' + memory + ')');
+            }
+        }
+
+        function memoryRecall() {
+            currentInput = memory.toString();
+            expression = memory.toString();
+            justCalculated = false;
+            updateDisplay();
+        }
+
+        function memoryClear() {
+            memory = 0;
+            showMemoryFeedback('MC (0)');
+        }
+
+        function showMemoryFeedback(msg) {
+            const temp = expressionDisplay.textContent;
+            expressionDisplay.textContent = msg;
+            setTimeout(() => {
+                expressionDisplay.textContent = temp;
+            }, 1000);
+        }
+
+        function addToHistory(calculation) {
+            history.unshift(calculation);
+            if (history.length > 5) {
+                history.pop();
+            }
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="text-gray-400 italic">Belum ada riwayat</div>';
+            } else {
+                historyList.innerHTML = history.map(h => 
+                    '<div class="bg-white p-2 rounded-lg">' + h + '</div>'
+                ).join('');
+            }
+        }
+
+        function toggleHistory() {
+            const panel = document.getElementById('historyPanel');
+            panel.classList.toggle('hidden');
+            if (!panel.classList.contains('hidden')) {
+                updateHistoryDisplay();
+            }
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') {
+                inputNumber(e.key);
+            } else if (e.key === '.') {
+                inputDecimal();
+            } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
+                inputOperator(e.key);
+            } else if (e.key === 'Enter' || e.key === '=') {
+                e.preventDefault();
+                calculate();
+            } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+                clearAll();
+            } else if (e.key === 'Backspace') {
+                e.preventDefault();
+                backspace();
+            }
+        });
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            display = document.getElementById('display');
+            expressionDisplay = document.getElementById('expression');
+            updateDisplay();
+        });
+    </script>
