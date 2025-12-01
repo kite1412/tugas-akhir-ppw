@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard - Material 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        :root {
+            --md3-primary: #6750A4;
+            --md3-on-primary: #FFFFFF;
+            --md3-primary-container: #EADDFF;
+            --md3-on-primary-container: #21005D;
+            --md3-surface: #FEF7FF;
+            --md3-on-surface: #1D1B20;
+            --md3-surface-variant: #E7E0EC;
+            --md3-on-surface-variant: #49454F;
+            --md3-outline: #79747E;
+            --md3-elev-1: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --md3-elev-2: 0 4px 6px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06);
+            --md3-elev-3: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .dark {
+            --md3-primary: #D0BCFF;
+            --md3-on-primary: #381E72;
+            --md3-primary-container: #4F378B;
+            --md3-on-primary-container: #EADDFF;
+            --md3-surface: #1C1B1F;
+            --md3-on-surface: #E6E1E6;
+            --md3-surface-variant: #49454F;
+            --md3-on-surface-variant: #CAC4D0;
+            --md3-outline: #938F99;
+            --md3-elev-1: 0 1px 3px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.4);
+            --md3-elev-2: 0 4px 6px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.4);
+            --md3-elev-3: 0 10px 15px rgba(0,0,0,0.5), 0 4px 6px rgba(0,0,0,0.4);
+        }
+        .md3-top-app-bar { background: rgba(12, 22, 35, 0.6); backdrop-filter: blur(6px); color: #e6ffe6; border-radius: 8px; box-shadow: 8px 8px 0 #0b0f14; border: 1px solid rgba(230,255,230,0.25); }
+        .md3-card { background: #a6ff66; color: #0b0f14; border-radius: 6px; box-shadow: 8px 8px 0 #0b0f14; border: 2px solid #0b0f14; }
+        .md3-tonal { background: #c4ff99; color: #0b0f14; border-radius: 6px; }
+        .md3-filled-btn { background: #0b0f14; color: #e6ffe6; border: 2px solid #0b0f14; border-radius: 6px; }
+        .md3-outlined-btn { border: 2px solid #0b0f14; color: #e6ffe6; background: #0b0f14; border-radius: 6px; }
+        .md3-input { background: #13222f; border: 2px solid #9ef88b; color: #e6ffe6; border-radius: 6px; }
+        .chip { background: #a6ff66; color: #0b0f14; border: 2px solid #0b0f14; border-radius: 6px; padding: 8px 14px; box-shadow: 6px 6px 0 #0b0f14; }
+        .list-item { background: #a6ff66; border: 2px solid #0b0f14; border-radius: 6px; box-shadow: 8px 8px 0 #0b0f14; }
+        .avatar { width: 36px; height: 36px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+        .avatar.purple { background: #bb86fc; color: #1b1033; }
+        .avatar.blue { background: #7cc9ff; color: #0b2237; }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        
+        .lucide { width: 100%; height: 100%; }
+        
+        .search-icon { color: #a8b3bd; }
+        body {
+            background: linear-gradient(135deg, #FAF7EF 0%, #F8F4E3 40%, #F1EBD6 100%);
+            color: var(--md3-on-surface);
+        }
+        body.dark {
+            background: linear-gradient(135deg, #0f1a2b 0%, #162a40 40%, #1f3452 100%);
+            color: var(--md3-on-surface);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Top App Bar -->
+    <header class="md3-top-app-bar fixed top-0 left-0 right-0 mx-auto max-w-7xl mt-4 px-4 py-3 z-20">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-black tracking-wide" style="text-shadow: 0 0 8px rgba(166,255,102,0.6)">Weather IO</h1>
+                <p class="opacity-80 text-sm md:text-base">Real-time weather information</p>
+            </div>
+            <div class="flex gap-2">
+                <button id="tempToggle" class="px-4 py-2 rounded-md font-bold md3-outlined-btn transition-all">°C</button>
+                <button id="themeToggle" class="px-3 py-2 rounded-md md3-outlined-btn transition-all" aria-label="Toggle theme">
+                    <i data-lucide="moon"></i>
+                </button>
+                <button id="refreshBtn" class="px-3 py-2 rounded-md md3-filled-btn transition-all" aria-label="Refresh">
+                    <i data-lucide="refresh-ccw"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Content Layout -->
+    <main class="max-w-7xl mx-auto px-4 md:px-8 pt-28 pb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Sidebar: Search + Favorites -->
+            <aside class="lg:col-span-1 space-y-6">
+                <div class="md3-card p-6">
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 opacity-70 search-icon"><i data-lucide="search"></i></span>
+                        <input type="text" id="searchInput" placeholder="Search city" class="md3-input w-full pl-12 pr-4 py-3 rounded-2xl focus:outline-none focus:ring-2" />
+                        <div id="suggestions" class="absolute top-full mt-2 w-full md3-card rounded-2xl shadow-2xl z-10 hidden"></div>
+                    </div>
+                </div>
+                <div class="md3-card p-6">
+                    <h2 class="text-xl font-semibold mb-4">Favorites</h2>
+                    <div id="favorites" class="flex flex-wrap gap-2 hidden"></div>
+                </div>
+            </aside>
+
+            <!-- Main: Current Weather + Forecast -->
+            <section class="lg:col-span-2 space-y-6">
+                <div id="loading" class="flex justify-center items-center h-40 hidden">
+                    <svg class="w-10 h-10 animate-spin text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                </div>
+                <div id="currentWeather" class="hidden"></div>
+                <div id="forecast" class="hidden"></div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        let isCelsius = true;
+        let isDark = false;
+        let currentLocation = { name: 'Jakarta', lat: -6.2088, lon: 106.8456 };
+        let favorites = [];
+        let currentWeatherData = null;
+        let forecastData = null;
+        let lastUpdate = new Date();
+        let autoRefreshInterval = null;
+
+        
+        function loadFavorites() {
+            const saved = localStorage.getItem('weatherFavorites');
+            if (saved) {
+                try {
+                    favorites = JSON.parse(saved);
+                    renderFavorites();
+                } catch (e) {
+                    favorites = [];
+                }
+            }
+        }
+
+        
+        function saveFavorites() {
+            localStorage.setItem('weatherFavorites', JSON.stringify(favorites));
+        }
+
+        
+        function renderFavorites() {
+            const favDiv = document.getElementById('favorites');
+            if (favorites.length > 0) {
+                favDiv.classList.remove('hidden');
+                favDiv.innerHTML = favorites.map(fav => 
+                    `<button onclick="selectFavorite('${fav.name}', ${fav.lat}, ${fav.lon})" class="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 hover:bg-gray-200 transition-all">
+                        ${fav.name}
+                    </button>`
+                ).join('');
+            } else {
+                favDiv.classList.add('hidden');
+            }
+        }
+
+        
+        function selectFavorite(name, lat, lon) {
+            currentLocation = { name, lat, lon };
+            fetchWeather(lat, lon);
+        }
+
+        
+        document.getElementById('tempToggle').addEventListener('click', () => {
+            isCelsius = !isCelsius;
+            document.getElementById('tempToggle').textContent = `°${isCelsius ? 'C' : 'F'}`;
+            if (currentWeatherData) {
+                renderCurrentWeather();
+                renderForecast();
+            }
+        });
+
+        
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            isDark = !isDark;
+            const body = document.body;
+            const themeBtn = document.getElementById('themeToggle');
+            
+            if (isDark) {
+                body.classList.add('dark');
+                themeBtn.innerHTML = `<i data-lucide="sun"></i>`;
+            } else {
+                body.classList.remove('dark');
+                themeBtn.innerHTML = `<i data-lucide="moon"></i>`;
+            }
+            
+            if (currentWeatherData) {
+                renderCurrentWeather();
+                renderForecast();
+            }
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        });
+
+        
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            fetchWeather(currentLocation.lat, currentLocation.lon);
+        });
+
+        
+        let searchTimeout;
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value;
+            clearTimeout(searchTimeout);
+            
+            if (query.length < 2) {
+                document.getElementById('suggestions').classList.add('hidden');
+                return;
+            }
+            
+            searchTimeout = setTimeout(() => searchCity(query), 300);
+        });
+
+        async function searchCity(query) {
+            try {
+                const response = await fetch(
+                    `https://geocoding-api.open-meteo.com/v1/search?name=${query}&count=5&language=en&format=json`
+                );
+                const data = await response.json();
+                
+                if (data.results && data.results.length > 0) {
+                    renderSuggestions(data.results);
+                } else {
+                    document.getElementById('suggestions').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error searching city:', error);
+            }
+        }
+
+        function renderSuggestions(results) {
+            const suggestionsDiv = document.getElementById('suggestions');
+            suggestionsDiv.innerHTML = results.map((city, idx) => 
+                `<div onclick="selectCity('${city.name}', ${city.latitude}, ${city.longitude})" class="list-item p-3 cursor-pointer mb-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="avatar ${idx % 2 ? 'purple' : 'blue'}">${city.name.charAt(0)}</div>
+                            <div>
+                                <div class="font-bold">${city.name}</div>
+                                <div class="opacity-70 text-sm">${city.admin1 || ''}${city.admin1 ? ', ' : ''}${city.country}</div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>`
+            ).join('');
+            suggestionsDiv.classList.remove('hidden');
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+
+        function selectCity(name, lat, lon) {
+            currentLocation = { name, lat, lon };
+            document.getElementById('searchInput').value = '';
+            document.getElementById('suggestions').classList.add('hidden');
+            fetchWeather(lat, lon);
+        }
+
+        async function fetchWeather(lat, lon) {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('currentWeather').classList.add('hidden');
+            document.getElementById('forecast').classList.add('hidden');
+            
+            const refreshIcon = document.getElementById('refreshBtn').querySelector('svg');
+            if (refreshIcon) refreshIcon.classList.add('animate-spin');
+            
+            try {
+                const response = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,pressure_msl&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
+                );
+                const data = await response.json();
+                
+                currentWeatherData = data.current;
+                forecastData = data.daily;
+                lastUpdate = new Date();
+                
+                renderCurrentWeather();
+                renderForecast();
+                
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('currentWeather').classList.remove('hidden');
+                document.getElementById('forecast').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error fetching weather:', error);
+                document.getElementById('loading').classList.add('hidden');
+            }
+            
+            if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+        }
+
+        
+        document.addEventListener('click', (e) => {
+            const s = document.getElementById('suggestions');
+            const input = document.getElementById('searchInput');
+            if (!s.classList.contains('hidden')) {
+                if (!s.contains(e.target) && e.target !== input) {
+                    s.classList.add('hidden');
+                }
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const s = document.getElementById('suggestions');
+                s.classList.add('hidden');
+            }
+        });
+
+        function convertTemp(temp) {
+            if (isCelsius) return Math.round(temp);
+            return Math.round((temp * 9/5) + 32);
+        }
+
+        function getWeatherIcon(code) {
+        
+            if (code === 0) return `<i data-lucide="sun"></i>`; // Clear
+            if (code <= 3) return `<i data-lucide="cloud-sun"></i>`; // Partly cloudy
+            if (code <= 67) return `<i data-lucide="cloud-rain"></i>`; // Rain
+            if (code <= 77) return `<i data-lucide="cloud-snow"></i>`; // Snow
+            if (code <= 82) return `<i data-lucide="cloud-drizzle"></i>`; // Showers
+            if (code >= 95) return `<i data-lucide="cloud-lightning"></i>`; // Thunderstorm
+            return `<i data-lucide="cloud"></i>`; // Default cloud
+        }
+
+        function getWeatherDescription(code) {
+            if (code === 0) return 'Clear sky';
+            if (code <= 3) return 'Partly cloudy';
+            if (code <= 67) return 'Rainy';
+            if (code <= 77) return 'Snowy';
+            if (code <= 82) return 'Rain showers';
+            if (code >= 95) return 'Thunderstorm';
+            return 'Cloudy';
+        }
+
+        function toggleFavorite() {
+            const isFav = favorites.some(f => f.name === currentLocation.name);
+            if (isFav) {
+                favorites = favorites.filter(f => f.name !== currentLocation.name);
+            } else {
+                favorites.push(currentLocation);
+            }
+            saveFavorites();
+            renderFavorites();
+            renderCurrentWeather();
+        }
+
+        function renderCurrentWeather() {
+            const isFav = favorites.some(f => f.name === currentLocation.name);
+            const cardClass = 'md3-card';
+            const textSecondary = 'opacity-70';
+            const bgSecondary = 'md3-tonal';
+            const borderClass = '';
+            
+            const html = `
+                <div class="${cardClass} p-8 mb-8">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                        <div class="flex items-center gap-3 mb-4 md:mb-0">
+                            <span class="text-blue-500"><i data-lucide="map-pin"></i></span>
+                            <div>
+                                <h2 class="text-3xl font-bold">${currentLocation.name}</h2>
+                                <div class="${textSecondary} text-sm mt-1 flex items-center gap-2">
+                                    <span class="text-sm"><i data-lucide="clock"></i></span>
+                                    <span>Updated: ${lastUpdate.toLocaleTimeString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="toggleFavorite()" class="p-3 rounded-full transition-all ${isFav ? 'md3-filled-btn' : 'md3-outlined-btn'}">
+                            <i data-lucide="heart"></i>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="flex items-center justify-center md:justify-start">
+                            <div class="text-blue-500 w-32 h-32">
+                                ${getWeatherIcon(currentWeatherData.weather_code)}
+                            </div>
+                            <div class="ml-6">
+                                <div class="text-7xl font-bold">
+                                    ${convertTemp(currentWeatherData.temperature_2m)}°
+                                </div>
+                                <div class="${textSecondary} text-xl mt-2">
+                                    ${getWeatherDescription(currentWeatherData.weather_code)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="${bgSecondary} rounded-2xl p-4">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span class="text-blue-500"><i data-lucide="droplet"></i></span>
+                                    <span class="${textSecondary}">Humidity</span>
+                                </div>
+                                <div class="text-2xl font-bold">${currentWeatherData.relative_humidity_2m}%</div>
+                            </div>
+                            
+                            <div class="${bgSecondary} rounded-2xl p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-blue-500"><i data-lucide="wind"></i></span>
+                                    <span class="${textSecondary}">Wind Speed</span>
+                                </div>
+                                <div class="text-2xl font-bold">${Math.round(currentWeatherData.wind_speed_10m)} km/h</div>
+                            </div>
+                            
+                            <div class="${bgSecondary} rounded-2xl p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-blue-500"><i data-lucide="gauge"></i></span>
+                                    <span class="${textSecondary}">Pressure</span>
+                                </div>
+                                <div class="text-2xl font-bold">${Math.round(currentWeatherData.pressure_msl)} hPa</div>
+                            </div>
+                            
+                            <div class="${bgSecondary} rounded-2xl p-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-blue-500"><i data-lucide="thermometer"></i></span>
+                                    <span class="${textSecondary}">Feels Like</span>
+                                </div>
+                                <div class="text-2xl font-bold">${convertTemp(currentWeatherData.temperature_2m)}°</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('currentWeather').innerHTML = html;
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+
+        function renderForecast() {
+            const cardClass = 'md3-card';
+            const bgSecondary = 'md3-tonal';
+            const textSecondary = 'opacity-70';
+            const borderClass = '';
+            
+            const forecastHtml = forecastData.time.slice(0, 5).map((date, i) => {
+                const dayName = new Date(date).toLocaleDateString('en-US', { weekday: 'short' });
+                return `
+                    <div class="${bgSecondary} rounded-2xl p-6 text-center transition-transform hover:scale-105">
+                        <div class="font-medium mb-3 ${textSecondary}">${dayName}</div>
+                        <div class="text-blue-500 w-16 h-16 mx-auto mb-3">
+                            ${getWeatherIcon(forecastData.weather_code[i])}
+                        </div>
+                        <div class="text-sm mb-2">${getWeatherDescription(forecastData.weather_code[i])}</div>
+                        <div class="flex justify-center items-center gap-2">
+                            <span class="text-xl font-bold">${convertTemp(forecastData.temperature_2m_max[i])}°</span>
+                            <span class="${textSecondary}">${convertTemp(forecastData.temperature_2m_min[i])}°</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            const html = `
+                <div class="${cardClass} p-8">
+                    <h3 class="text-2xl font-bold mb-6">5-Day Forecast</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        ${forecastHtml}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('forecast').innerHTML = html;
+            if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                window.lucide.createIcons();
+            }
+        }
+
+        
+        function startAutoRefresh() {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+            autoRefreshInterval = setInterval(() => {
+                fetchWeather(currentLocation.lat, currentLocation.lon);
+            }, 5000); // 5 seconds
+        }
+
+        // Initialize
+        loadFavorites();
+        fetchWeather(currentLocation.lat, currentLocation.lon);
+        startAutoRefresh();
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
